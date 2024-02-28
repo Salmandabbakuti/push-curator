@@ -36,22 +36,27 @@ export default function Home() {
     )
       return message.error("Please fill all the fields");
     console.log("Sending notification:", notificationInput);
-    const pushUser = await PushAPI.initialize(signer, {
-      env: PUSH_CONSTANTS.ENV.STAGING
-    });
+    try {
+      const pushUser = await PushAPI.initialize(signer, {
+        env: PUSH_CONSTANTS.ENV.STAGING
+      });
 
-    const sendNotifRes = await pushUser.channel.send(["*"], {
-      notification: {
-        title: notificationInput.title,
-        body: notificationInput.body
-      },
-      payload: {
-        category: notificationInput.category,
-        cta: notificationInput.cta
-      }
-    });
-    console.log("Send notification response:", sendNotifRes);
-    message.success("Notification sent successfully");
+      const sendNotifRes = await pushUser.channel.send(["*"], {
+        notification: {
+          title: notificationInput.title,
+          body: notificationInput.body
+        },
+        payload: {
+          category: notificationInput.category,
+          cta: notificationInput.cta
+        }
+      });
+      console.log("Send notification response:", sendNotifRes);
+      message.success("Notification sent successfully");
+    } catch (err) {
+      console.error("Error sending notification:", err);
+      message.error("Failed to send notification. Please try again.");
+    }
   };
 
   return (
@@ -71,7 +76,7 @@ export default function Home() {
             <Form.Item name="body" label="Body">
               <Input.TextArea required value={notificationInput.body} />
             </Form.Item>
-            <Form.Item name="category" required label="Category">
+            <Form.Item name="category" label="Category" required>
               <Select defaultValue="Other">
                 <Select.Option value={1}>Tech</Select.Option>
                 <Select.Option value={2}>Business</Select.Option>
@@ -81,14 +86,12 @@ export default function Home() {
                 <Select.Option value={6}>Other</Select.Option>
               </Select>
             </Form.Item>
-            <Form.Item name="cta" required label="CTA">
-              <Input value={notificationInput.cta} />
+            <Form.Item name="cta" label="CTA">
+              <Input value={notificationInput.cta} required />
             </Form.Item>
-            <Form.Item>
-              <Button type="primary" onClick={sendNotification}>
-                Send Notification
-              </Button>
-            </Form.Item>
+            <Button type="primary" htmlType="submit">
+              Send Notification
+            </Button>
           </Form>
         </div>
       ) : (
