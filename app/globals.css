@@ -92,3 +92,25 @@ a {
     color-scheme: dark;
   }
 }
+
+.ant-form-item {
+  margin-bottom: 3px;
+}
+
+.ant-form {
+  text-align: center;
+  border-radius: 15px;
+  background-color: #fff;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  padding: 20px;
+  margin: 0 auto;
+  max-width: 500px;
+}
+
+.ant-input,
+.ant-btn,
+.ant-input-affix-wrapper,
+.ant-select-selector {
+  border-radius: 8px !important;
+}
