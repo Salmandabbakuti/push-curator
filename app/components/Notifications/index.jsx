@@ -169,19 +169,6 @@ export default function NotificationDrawer() {
     }
   };
 
-  useEffect(() => {
-    if (address && signer) {
-      initializePushSdk();
-    }
-
-    return () => {
-      if (stream) {
-        stream.disconnect();
-        stream.removeAllListeners();
-      }
-    };
-  }, [address, signer]);
-
   const getSubscriptionPreferences = async () => {
     if (!pushSdk) return message.error("Push SDK not initialized");
     try {
@@ -214,6 +201,19 @@ export default function NotificationDrawer() {
       message.error("Failed to get subscriptions preferences");
     }
   };
+
+  useEffect(() => {
+    if (signer) {
+      initializePushSdk();
+    }
+
+    return () => {
+      if (stream) {
+        stream.disconnect();
+        stream.removeAllListeners();
+      }
+    };
+  }, []);
 
   useEffect(() => {
     if (pushSdk) {
