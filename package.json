@@ -1,6 +1,6 @@
 {
-  "name": "push-article-aggregator",
-  "description": "An article aggregator with the Push Protocol",
+  "name": "push-curator",
+  "description": "Push Curator sends personalized push notifications to users based on their behavior and preferences.",
   "version": "0.1.0",
   "private": true,
   "license": "MIT",

@@ -31,8 +31,9 @@ export default function Web3Provider({ children }) {
       autoConnect={true}
       clientId={clientId}
       dAppMeta={{
-        name: "Article Aggregator",
-        description: "Article Aggregator",
+        name: "Push Curator",
+        description:
+          "Personalized News, Curated and Pushed with Push Protocol Notifications",
         logoUrl: "https://example.com/logo.png",
         url: "https://example.com",
         isDarkMode: true

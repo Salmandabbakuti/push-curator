@@ -23,7 +23,7 @@ export default function SiteLayout({ children }) {
           alignItems: "center"
         }}
       >
-        <h3>Article Aggregator</h3>
+        <h3>Push Curator</h3>
         <div style={{ display: "flex", alignItems: "center" }}>
           {account && <NotificationDrawer />}
           <ConnectWallet

@@ -5,7 +5,7 @@ import { PushAPI, CONSTANTS as PUSH_CONSTANTS } from "@pushprotocol/restapi";
 import { message, Button, Form, Select, Input } from "antd";
 import styles from "./page.module.css";
 
-const ARTICLE_AGGREGATOR_CHANNEL_ADDRESS =
+const PUSH_CURATOR_CHANNEL_ADDRESS =
   "0xc7203561EF179333005a9b81215092413aB86aE9";
 
 export default function Home() {
@@ -61,7 +61,7 @@ export default function Home() {
 
   return (
     <main className={styles.main}>
-      {address === ARTICLE_AGGREGATOR_CHANNEL_ADDRESS ? (
+      {address === PUSH_CURATOR_CHANNEL_ADDRESS ? (
         <div>
           <Form
             layout="vertical"
@@ -69,7 +69,7 @@ export default function Home() {
             initialValues={notificationInput}
             onFinish={sendNotification}
           >
-            <h4>Send New Article Notification</h4>
+            <h4>Send New Personalized Notification</h4>
             <Form.Item name="title" label="Title">
               <Input required autoFocus value={notificationInput.title} />
             </Form.Item>
@@ -101,8 +101,8 @@ export default function Home() {
             marginTop: "40px"
           }}
         >
-          Welcome to Article Aggregator! Connect wallet and choose your
-          notification preferences to receive notifications.
+          Welcome to Push Curator! Connect wallet and choose your notification
+          preferences to receive notifications about your favorite topics.
         </h2>
       )}
     </main>

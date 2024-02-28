@@ -16,7 +16,7 @@ import { PushAPI, CONSTANTS as PUSH_CONSTANTS } from "@pushprotocol/restapi";
 import { useAddress, useSigner } from "@thirdweb-dev/react";
 import NotificationTab from "./NotificationTab";
 
-const ARTICLE_AGGREGATOR_CHANNEL_ADDRESS =
+const PUSH_CURATOR_CHANNEL_ADDRESS =
   "0xc7203561EF179333005a9b81215092413aB86aE9";
 
 export default function NotificationDrawer() {
@@ -136,7 +136,7 @@ export default function NotificationDrawer() {
         raw: true,
         limit: 20,
         page: 1,
-        channels: [ARTICLE_AGGREGATOR_CHANNEL_ADDRESS]
+        channels: [PUSH_CURATOR_CHANNEL_ADDRESS]
       });
       console.log("Notifications response:", response);
       setNotifications(response);
@@ -149,7 +149,7 @@ export default function NotificationDrawer() {
   const handleOptInToChannel = async () => {
     try {
       const response = await pushSdk.notification.subscribe(
-        `eip155:11155111:${ARTICLE_AGGREGATOR_CHANNEL_ADDRESS}`,
+        `eip155:11155111:${PUSH_CURATOR_CHANNEL_ADDRESS}`,
         {
           settings: [
             { enabled: notificationPreferences.tech },
@@ -175,11 +175,10 @@ export default function NotificationDrawer() {
       const response = await pushSdk.notification.subscriptions();
       console.log("Subscriptions response:", response);
 
-      // Filter out the "Article Aggregator" channel subscription
+      // Filter out the "Push Curator" channel subscription
       const filteredSubscriptions = response.find(
         (subscription) =>
-          subscription.channel ===
-          ARTICLE_AGGREGATOR_CHANNEL_ADDRESS.toLowerCase()
+          subscription.channel === PUSH_CURATOR_CHANNEL_ADDRESS.toLowerCase()
       );
       console.log("Filtered subscriptions:", filteredSubscriptions);
       const userSettings = filteredSubscriptions?.user_settings;
@@ -324,10 +323,7 @@ export default function NotificationDrawer() {
           </div>
         </Card>
         <Divider />
-        <NotificationTab
-          title="Article Aggregator"
-          notifications={notifications}
-        />
+        <NotificationTab title="Push Curator" notifications={notifications} />
       </Drawer>
     </div>
   );

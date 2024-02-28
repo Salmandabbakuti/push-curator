@@ -6,8 +6,9 @@ import Web3Provider from "./components/Web3Provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Push Article Aggregator",
-  description: "Push Article Aggregator"
+  title: "Push Curator",
+  description:
+    "Personalized News, Curated and Pushed with Push Protocol Notifications"
 };
 
 export default function RootLayout({ children }) {
