@@ -12,7 +12,7 @@ export default function Home() {
   const [notificationInput, setNotificationInput] = useState({
     title: "",
     body: "",
-    category: 0,
+    category: 6,
     cta: ""
   });
   const address = useAddress();
@@ -58,7 +58,6 @@ export default function Home() {
     <main className={styles.main}>
       {address === ARTICLE_AGGREGATOR_CHANNEL_ADDRESS ? (
         <div>
-          <h1>Article Aggregator</h1>
           <Form
             layout="vertical"
             onValuesChange={handleNotificationInputChange}
@@ -73,13 +72,13 @@ export default function Home() {
               <Input.TextArea required value={notificationInput.body} />
             </Form.Item>
             <Form.Item name="category" required label="Category">
-              <Select defaultValue={5} value={notificationInput.category}>
-                <Select.Option value={0}>Tech</Select.Option>
-                <Select.Option value={1}>Business</Select.Option>
-                <Select.Option value={2}>Science</Select.Option>
-                <Select.Option value={3}>Politics</Select.Option>
-                <Select.Option value={4}>Entertainment</Select.Option>
-                <Select.Option value={5}>Other</Select.Option>
+              <Select defaultValue="Other">
+                <Select.Option value={1}>Tech</Select.Option>
+                <Select.Option value={2}>Business</Select.Option>
+                <Select.Option value={3}>Science</Select.Option>
+                <Select.Option value={4}>Politics</Select.Option>
+                <Select.Option value={5}>Entertainment</Select.Option>
+                <Select.Option value={6}>Other</Select.Option>
               </Select>
             </Form.Item>
             <Form.Item name="cta" required label="CTA">
@@ -93,10 +92,15 @@ export default function Home() {
           </Form>
         </div>
       ) : (
-        <p>
-          Welcome to Article Aggregator! Connect wallet and Choose your
+        <h2
+          style={{
+            textAlign: "center",
+            marginTop: "40px"
+          }}
+        >
+          Welcome to Article Aggregator! Connect wallet and choose your
           notification preferences to receive notifications.
-        </p>
+        </h2>
       )}
     </main>
   );

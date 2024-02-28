@@ -182,9 +182,43 @@ export default function NotificationDrawer() {
     };
   }, [address, signer]);
 
+  const getSubscriptionPreferences = async () => {
+    if (!pushSdk) return message.error("Push SDK not initialized");
+    try {
+      const response = await pushSdk.notification.subscriptions();
+      console.log("Subscriptions response:", response);
+
+      // Filter out the "Article Aggregator" channel subscription
+      const filteredSubscriptions = response.find(
+        (subscription) =>
+          subscription.channel ===
+          ARTICLE_AGGREGATOR_CHANNEL_ADDRESS.toLowerCase()
+      );
+      console.log("Filtered subscriptions:", filteredSubscriptions);
+      const userSettings = filteredSubscriptions?.user_settings;
+      const settingsJson = userSettings ? JSON.parse(userSettings) : null;
+      console.log("User settings:", settingsJson);
+      const preferences = {
+        tech: settingsJson ? settingsJson[0]?.user : false,
+        business: settingsJson ? settingsJson[1]?.user : false,
+        science: settingsJson ? settingsJson[2]?.user : false,
+        politics: settingsJson ? settingsJson[3]?.user : false,
+        entertainment: settingsJson ? settingsJson[4]?.user : false,
+        other: settingsJson ? settingsJson[5]?.user : false
+      };
+
+      setNotificationPreferences(preferences);
+      // Use the filtered subscriptions as needed
+    } catch (error) {
+      console.error("Subscriptions preferences retrieval error:", error);
+      message.error("Failed to get subscriptions preferences");
+    }
+  };
+
   useEffect(() => {
     if (pushSdk) {
       getNotifications();
+      getSubscriptionPreferences();
     }
   }, [pushSdk]);
 
