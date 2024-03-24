@@ -1,38 +1,88 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Push Curator
 
-## Getting Started
+Push Curator is a project aimed at delivering personalized news notifications to users based on their interests. It utilizes push protocols and custom notification channels to allow users to subscribe to specific categories and receive relevant updates accordingly.
 
-First, run the development server:
+## Overview:
 
-```bash
+Push Curator provides the following main functionalities:
+
+1. **Creating Channel Settings:** Channel admin can create notification channels with settings for different categories such as tech, business, education, politics, entertainment, etc.
+
+2. **Subscribing to Channels:** Users can opt-in to channels and toggle their interests by selecting the categories they are interested in receiving notifications for.
+
+3. **Sending Notifications:** Channel admin can send notifications to subscribed users based on their selected categories.
+
+### Getting Started:
+
+```sh
+npm install
+
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000 with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+### Demo
+![Screen2](https://github.com/Salmandabbakuti/push-curator/assets/29351207/99aa77c9-51f5-4d9e-9ca1-6e54a22592e4)
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+![Screen1](https://github.com/Salmandabbakuti/push-curator/assets/29351207/67a00cb5-b4a8-42fd-aaef-9724a3b4bae4)
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+### How its been implemented:
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### Initializing SDK
 
-## Learn More
+```ts
+import { PushAPI, CONSTANTS } from "@pushprotocol/restapi";
 
-To learn more about Next.js, take a look at the following resources:
+const pushUser = await PushAPI.initialize(signer, {
+  env: CONSTANTS.ENV.STAGING
+});
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Creating Channel with Settings
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```ts
+const createChannelSettingRes = pushUser.channel.setting([
+  {
+    type: 1, // Boolean type
+    default: 1,
+    description: "Tech"
+  },
+  {
+    type: 1, // Boolean type
+    default: 1,
+    description: "Business"
+  }
+]);
+```
 
-## Deploy on Vercel
+### Subscribing to Channel with Settings
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```ts
+const response = await userAlice.notification.subscribe(
+  `eip155:11155111:${channelAddress}`,
+  {
+    settings: [
+      // settings are dependent on channel
+      { enabled: true }, // setting 1
+      { enabled: false }, // setting 2
+      { enabled: true } // setting 3
+    ]
+  }
+);
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### Sending Notification with category
+
+```ts
+await pushUser.channel.send(["*"], {
+  notification: {
+    title: "New Notification",
+    body: "This is a new notification"
+  },
+  payload: {
+    category: 1, // category id, setting index in this case(tech 1, business 2, education 3, etc.)
+    cta: "https://example.com/cta"
+  }
+});
+```
